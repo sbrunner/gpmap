@@ -11,7 +11,6 @@
       rotation: true
       items:
         - !map
-          condition: showMap
           width: 511
           height: 692
           absoluteX: 51

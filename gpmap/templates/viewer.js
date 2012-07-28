@@ -57,7 +57,8 @@ Ext.onReady(function() {
         {
             ptype: "gpmap_gpprint",
             actionTarget: "center.tbar",
-            outputTarget: "main"
+            outputTarget: "main",
+            printURL: "${request.route_url('printproxy')}"
         },
         {
             ptype: "cgxp_menushortcut",

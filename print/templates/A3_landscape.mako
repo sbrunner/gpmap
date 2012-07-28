@@ -14,7 +14,6 @@
       items:
 ${self.block_logo()}
         - !map
-          condition: showMap
           width: 1100
           height: 704
           absoluteX: 51
