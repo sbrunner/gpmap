@@ -35,24 +35,24 @@ def main(global_config, **settings):
     config.add_static_view('proj', 'gpmap:static')
 
     # mobile views and routes
-    config.add_route('mobile_index_dev', '/mobile_dev/')
-    config.add_view('c2cgeoportal.views.mobile.index',
-                    renderer='gpmap:static/mobile/index.html',
-                    route_name='mobile_index_dev')
-    config.add_route('mobile_config_dev', '/mobile_dev/config.js')
-    config.add_view('c2cgeoportal.views.mobile.config',
-                    renderer='gpmap:static/mobile/config.js',
-                    route_name='mobile_config_dev')
-    config.add_static_view('mobile_dev', 'gpmap:static/mobile')
-
-    config.add_route('mobile_index_prod', '/mobile/')
-    config.add_view('c2cgeoportal.views.mobile.index',
-                    renderer='gpmap:static/mobile/build/production/index.html',
-                    route_name='mobile_index_prod')
-    config.add_route('mobile_config_prod', '/mobile/config.js')
-    config.add_view('c2cgeoportal.views.mobile.config',
-                    renderer='gpmap:static/mobile/build/production/config.js',
-                    route_name='mobile_config_prod')
-    config.add_static_view('mobile', 'gpmap:static/mobile/build/production')
+#    config.add_route('mobile_index_dev', '/mobile_dev/')
+#    config.add_view('c2cgeoportal.views.mobile.index',
+#                    renderer='gpmap:static/mobile/index.html',
+#                    route_name='mobile_index_dev')
+#    config.add_route('mobile_config_dev', '/mobile_dev/config.js')
+#    config.add_view('c2cgeoportal.views.mobile.config',
+#                    renderer='gpmap:static/mobile/config.js',
+#                    route_name='mobile_config_dev')
+#    config.add_static_view('mobile_dev', 'gpmap:static/mobile')
+#
+#    config.add_route('mobile_index_prod', '/mobile/')
+#    config.add_view('c2cgeoportal.views.mobile.index',
+#                    renderer='gpmap:static/mobile/build/production/index.html',
+#                    route_name='mobile_index_prod')
+#    config.add_route('mobile_config_prod', '/mobile/config.js')
+#    config.add_view('c2cgeoportal.views.mobile.config',
+#                    renderer='gpmap:static/mobile/build/production/config.js',
+#                    route_name='mobile_config_prod')
+#    config.add_static_view('mobile', 'gpmap:static/mobile/build/production')
 
     return config.make_wsgi_app()
