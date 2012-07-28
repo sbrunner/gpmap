@@ -1,0 +1,3 @@
+[submodule "gpmap/static/lib/cgxp"]
+	path = gpmap/static/lib/cgxp
+	url = https://github.com/camptocamp/cgxp.git
