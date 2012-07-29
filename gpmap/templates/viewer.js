@@ -55,10 +55,25 @@ Ext.onReady(function() {
             actionTarget: "center.tbar"
         },
         {
+            ptype: "cgxp_menushortcut",
+            actionTarget: "center.tbar",
+            type: '-'
+        },
+        {
             ptype: "gpmap_gpprint",
             actionTarget: "center.tbar",
             outputTarget: "main",
+            toggleGroup: "maptools",
             printURL: "${request.route_url('printproxy')}"
+        },
+        {
+            ptype: "gpmap_gpprint",
+            actionTarget: "center.tbar",
+            outputTarget: "main",
+            toggleGroup: "maptools",
+            printURL: "${request.route_url('printproxy')}",
+            printText: "Print Scale",
+            scale: true
         },
         {
             ptype: "cgxp_menushortcut",

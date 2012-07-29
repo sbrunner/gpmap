@@ -55,6 +55,8 @@ gpmap.plugins.GPPrint = Ext.extend(gxp.plugins.Tool, {
     /** api: ptype = gpmap_gpprint */
     ptype: "gpmap_gpprint",
 
+    /** api: config[toggleGroup]
+     */
     /** api: config[actionTarget]
      */
     /** api: config[outputTarget]
@@ -67,6 +69,10 @@ gpmap.plugins.GPPrint = Ext.extend(gxp.plugins.Tool, {
     timeout: 120000,
 
     padding: 15,
+
+    scale: false,
+
+    printText: 'Print',
 
     /** api: method[addActions]
      */
@@ -82,7 +88,7 @@ gpmap.plugins.GPPrint = Ext.extend(gxp.plugins.Tool, {
         this.provider.loadCapabilities();
 
         var button = new Ext.Button(Ext.apply({
-            text: "Print",
+            text: this.printText,
             handler: this.display,
             scope: this
         }, this.actionConfig));
@@ -108,9 +114,27 @@ gpmap.plugins.GPPrint = Ext.extend(gxp.plugins.Tool, {
 
     display: function() {
         var layers = [];
+        var scale = this.provider.dpi.get('value');
+        var ratio = scale / OpenLayers.DOTS_PER_INCH;
         Ext.each(this.target.mapPanel.map.layers, function (layer) {
-            layers.push(layer.clone());
-        });
+            layer = layer.clone()
+            if (layer.resolutions && this.scale) {
+                var roundedWidth = Math.round(layer.tileSize.w / ratio);
+                var ra = layer.tileSize.w / roundedWidth;
+
+                layer.tileSize = new OpenLayers.Size(
+                    layer.tileSize.w / ra,
+                    layer.tileSize.h / ra
+                );
+
+                var originalResolutions = layer.resolutions;
+                layer.options.resolutions = [];
+                Ext.each(originalResolutions, function (r) {
+                    layer.options.resolutions.push(r * ra);
+                });
+            }
+            layers.push(layer);
+        }, this);
         this.map = new GeoExt.MapPanel({
             hideLabel: true,
             name: 'extent',
@@ -121,6 +145,9 @@ gpmap.plugins.GPPrint = Ext.extend(gxp.plugins.Tool, {
             extent: this.target.mapPanel.map.getExtent(),
             width: this.provider.layout.data.size.width,
             height: this.provider.layout.data.size.height,
+            bodyStyle: {
+                'border-color': '#999'
+            },
             map: {
                 controls: [
                     new OpenLayers.Control.Navigation(),
@@ -212,6 +239,10 @@ gpmap.plugins.GPPrint = Ext.extend(gxp.plugins.Tool, {
             }, this.defaults),
             items: fields,
             buttons: [{
+                text: "Cancel",
+                handler: this.close,
+                scope: this
+            }, {
                 text: "Print",
                 handler: this.print,
                 scope: this
@@ -232,8 +263,10 @@ gpmap.plugins.GPPrint = Ext.extend(gxp.plugins.Tool, {
             scale: new Ext.data.Record({value: Math.round(this.map.map.getScale())}),
             rotation: 0
         }, {});
+        this.close();
+    },
 
-        var main = Ext.getCmp('main');
+    close: function() {
         this.main.remove(this.panel, true);
         this.main.layout.setActiveItem(0);
         this.panel = null;
